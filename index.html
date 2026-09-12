@@ -157,30 +157,18 @@
       <div class="time-block"><span class="time-value" id="minutes">0</span><span class="time-label">Минут</span></div>
       <div class="time-block"><span class="time-value" id="seconds">0</span><span class="time-label">Секунд</span></div>
     </div>
-
     <button id="loveBtn">💌 Скажи мне что-то тёплое</button>
-
     <div class="message-card" id="messageCard">
-      <!-- Сюда будет появляться послание -->
     </div>
-
     <p class="counter" id="counter"></p>
   </div>
-
   <script>
-    // Инициализация Telegram (если открыто в ТГ — работает, если в браузере — просто игнорируется)
     if (window.Telegram && window.Telegram.WebApp) {
       const tg = window.Telegram.WebApp;
       tg.ready();
       tg.expand();
     }
-
-    // 👇👇👇 ЗАМЕНИ НА СВОЮ ДАТУ! 👇👇👇
-    // Формат: new Date(ГОД, МЕСЯЦ-1, ДЕНЬ, ЧАС, МИНУТА)
-    // Месяц с нуля: 0 = январь, 1 = февраль, 2 = март ... 11 = декабрь
-    const START_DATE = new Date(2023, 2, 12, 18, 0);
-
-    // 🕐 Таймер
+    const START_DATE = new Date(2026, 7, 3, 22, 0);
     function updateTimer() {
       const diff = new Date() - START_DATE;
       const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
