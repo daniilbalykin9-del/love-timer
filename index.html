@@ -23,15 +23,12 @@
       transition: background 1.5s ease;
     }
 
-    /* 🌙 Дневная тема (по умолчанию) */
     body.theme-day {
       background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #6a0572 100%);
     }
-    /* 🌙 Ночная тема */
     body.theme-night {
       background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 50%, #4a1e5c 100%);
     }
-    /* 🌅 Вечерняя тема (закат) */
     body.theme-evening {
       background: linear-gradient(135deg, #ff8a5b 0%, #d64d6d 50%, #4a1e5c 100%);
     }
@@ -116,11 +113,26 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.25);
       transition: transform 0.2s, box-shadow 0.2s;
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
     button:active {
       transform: scale(0.96);
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    /* Кнопка сброса — поменьше и полупрозрачная */
+    .reset-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .reset-btn:active {
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .message-card {
@@ -146,7 +158,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-    /* Особое послание-сюрприз */
     .message-card.special {
       background: linear-gradient(135deg, rgba(255, 215, 0, 0.35), rgba(255, 105, 180, 0.35));
       border: 2px solid rgba(255, 215, 0, 0.7);
@@ -190,7 +201,7 @@
     }
     .music-btn:active { transform: scale(0.9); }
 
-    /* 🎁 Прогресс-бар сюрприза */
+    /* 🎁 Прогресс-бар */
     .progress-wrap {
       width: 100%;
       margin-top: 12px;
@@ -217,6 +228,14 @@
       border-radius: 3px;
       transition: width 0.5s ease;
     }
+
+    /* 💥 Сердечки, которые летят от кнопки */
+    .burst-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 999;
+      will-change: transform, opacity;
+    }
   </style>
 </head>
 <body>
@@ -235,6 +254,7 @@
     </div>
 
     <button id="loveBtn">💌 Скажи мне что-то тёплое</button>
+    <button class="reset-btn" id="resetBtn">🔄 Сбросить счётчик</button>
 
     <div class="message-card" id="messageCard"></div>
 
@@ -245,29 +265,17 @@
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
   </div>
+
   <audio id="bgMusic" loop preload="auto">
-   <source src="https://klopec.ru/sounds/2022-10/sound_32062.mp3" type="audio/mpeg">
+    <source src="https://klopec.ru/sounds/2023-11/sound_125753.mp3" type="audio/mpeg">
   </audio>
+
   <script>
     if (window.Telegram && window.Telegram.WebApp) {
       const tg = window.Telegram.WebApp;
       tg.ready();
       tg.expand();
     }
-    // 🔓 Разблокировка аудио (для Safari и мобильных браузеров)
-const bgMusic = document.getElementById('bgMusic');
-bgMusic.volume = 0.25;
-
-function unlockAudio() {
-  bgMusic.play().then(() => {
-    bgMusic.pause();
-    bgMusic.currentTime = 0;
-  }).catch(err => console.log('Аудио пока заблокировано:', err));
-  document.removeEventListener('touchstart', unlockAudio);
-  document.removeEventListener('click', unlockAudio);
-}
-document.addEventListener('touchstart', unlockAudio, { once: true });
-document.addEventListener('click', unlockAudio, { once: true });
     const START_DATE = new Date(2026, 7, 3, 22, 0);
     function updateTimer() {
       const diff = new Date() - START_DATE;
@@ -283,7 +291,6 @@ document.addEventListener('click', unlockAudio, { once: true });
     }
     updateTimer();
     setInterval(updateTimer, 1000);
-
     const MESSAGES = [
       "Ты — моё самое большое счастье 💖",
       "Я люблю тебя больше всего на свете ❤️",
@@ -300,7 +307,6 @@ document.addEventListener('click', unlockAudio, { once: true });
       "Ты делаешь этот мир лучше просто тем, что в нём есть 🌍",
       "Я выбирал бы тебя снова и снова, в каждой жизни ♾️",
       "Ты — мой дом, куда хочется возвращаться 🏡",
-      "Люблю тебя до Луны и обратно 🌙",
       "Ты моя самая любимая причина улыбаться 😊",
       "С тобой даже обычный день — приключение 🚀",
       "Твои глаза — моё любимое место на земле 👀✨",
@@ -319,18 +325,30 @@ document.addEventListener('click', unlockAudio, { once: true });
       "Твоя улыбка освещает мой день ярче солнца ☀️💖",
       "С тобой я понял, что такое настоящее счастье 💫",
       "Ты — моя мелодия, которая никогда не надоест 🎶",
-      "Никогда не забывай: ты очень, очень любима 💝"
+      "Никогда не забывай: ты очень, очень любима 💝",
+      "Ты — моя самая лучшая случайность в жизни 🎲❤️",
+      "С тобой я хочу встретить старость 👵👴",
+      "Ты — моя тихая гавань в любой шторм ⛵",
+      "Я люблю в тебе всё: и смех, и глаза, и даже как ты злишься 🥺",
+      "С тобой я научился любить по-настоящему 💞",
+      "Ты — та, с кем я хочу делить каждое утро ☕",
+      "Твоя нежность — моё самое любимое лекарство 💊❤️",
+      "Ты моя самая лучшая половина 🧩",
+      "Я благодарен судьбе за каждый день с тобой 🙏",
+      "Ты — моё сердце, моя душа, мой мир 🌎💖",
     ];
 
-    // 🎁 Особое послание (сюрприз после 10 нажатий)
-    const SPECIAL_MESSAGE = "🎁 Ты дошла до самого главного...<br><br>Я люблю тебя больше жизни. Ты - моё всё. Никогда не сомневайся в этом. Я Навсегда твой ❤️";
+    // 🎁 Особое послание
+    const SPECIAL_MESSAGE = "🎁 Ты дошла до самого главного...<br><br>Я люблю тебя больше жизни. Ты — моё всё. Никогда не сомневайся в этом. Я Навсегда твой ❤️";
 
+    // Состояние
     let shownCount = parseInt(localStorage.getItem('loveCount') || '0');
     let usedIndexes = JSON.parse(localStorage.getItem('usedIndexes') || '[]');
     let specialShown = localStorage.getItem('specialShown') === 'true';
 
     const card = document.getElementById('messageCard');
     const btn = document.getElementById('loveBtn');
+    const resetBtn = document.getElementById('resetBtn');
     const counter = document.getElementById('counter');
     const progressWrap = document.getElementById('progressWrap');
     const progressLabel = document.getElementById('progressLabel');
@@ -375,13 +393,11 @@ document.addEventListener('click', unlockAudio, { once: true });
         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
       }
 
-      // 🎵 Запускаем музыку при первом клике
       playMusicOnFirstClick();
 
       card.classList.remove('show', 'special');
 
       setTimeout(() => {
-        // 🎁 Проверяем сюрприз
         if (shownCount >= 10 && !specialShown) {
           card.innerHTML = SPECIAL_MESSAGE;
           card.classList.add('show', 'special');
@@ -404,13 +420,35 @@ document.addEventListener('click', unlockAudio, { once: true });
       updateProgress();
     });
 
+    // 🔄 Сброс счётчика
+    resetBtn.addEventListener('click', () => {
+      if (!confirm('Сбросить счётчик посланий и сюрприз?')) return;
+
+      shownCount = 0;
+      usedIndexes = [];
+      specialShown = false;
+
+      localStorage.removeItem('loveCount');
+      localStorage.removeItem('usedIndexes');
+      localStorage.removeItem('specialShown');
+
+      card.classList.remove('show', 'special');
+      card.textContent = '';
+      btn.textContent = '💌 Скажи мне что-то тёплое';
+      updateCounterText();
+      updateProgress();
+
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+      }
+    });
+
     // 🎵 Музыка
     const music = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
     let musicStarted = false;
-    let musicOn = localStorage.getItem('musicOn') !== 'false'; // по умолчанию вкл
+    let musicOn = localStorage.getItem('musicOn') !== 'false';
 
-    // Устанавливаем громкость тихую
     music.volume = 0.25;
 
     function updateMusicIcon() {
@@ -438,19 +476,39 @@ document.addEventListener('click', unlockAudio, { once: true });
       updateMusicIcon();
     });
 
-    // 💥 Взрыв сердечек
+    // 🔓 Разблокировка аудио для мобильных
+    function unlockAudio() {
+      music.play().then(() => {
+        music.pause();
+        music.currentTime = 0;
+      }).catch(() => {});
+      document.removeEventListener('touchstart', unlockAudio);
+      document.removeEventListener('click', unlockAudio);
+    }
+    document.addEventListener('touchstart', unlockAudio, { once: true });
+    document.addEventListener('click', unlockAudio, { once: true });
+
+    // 💥 Взрыв сердечек — ИСПРАВЛЕНО для мобильных
     function burstHearts(count = 12) {
       const emojis = ['❤️', '💖', '💕', '💗', '💓', '💞', '✨'];
+
+      // Находим центр кнопки, чтобы сердечки летели именно от неё
+      const rect = btn.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+
       for (let i = 0; i < count; i++) {
         const heart = document.createElement('div');
+        heart.className = 'burst-heart';
         heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        heart.style.position = 'fixed';
-        heart.style.left = '50%';
-        heart.style.top = '60%';
+        heart.style.left = originX + 'px';
+        heart.style.top = originY + 'px';
         heart.style.fontSize = (18 + Math.random() * 18) + 'px';
-        heart.style.pointerEvents = 'none';
-        heart.style.zIndex = '999';
-        heart.style.transition = 'transform 1.2s ease-out, opacity 1.2s ease-out';
+        // Начальные значения
+        heart.style.transform = 'translate(-50%, -50%) scale(1)';
+        heart.style.opacity = '1';
+        heart.style.transition = 'transform 1.2s cubic-bezier(0.25, 0.8, 0.4, 1), opacity 1.2s ease-out';
+
         document.body.appendChild(heart);
 
         const angle = Math.random() * Math.PI * 2;
@@ -458,11 +516,13 @@ document.addEventListener('click', unlockAudio, { once: true });
         const x = Math.cos(angle) * distance;
         const y = Math.sin(angle) * distance - 100;
 
-        requestAnimationFrame(() => {
-          heart.style.transform = `translate(${x}px, ${y}px) scale(1.5) rotate(${Math.random() * 360}deg)`;
+        // Используем setTimeout вместо requestAnimationFrame — работает надёжнее на телефонах
+        setTimeout(() => {
+          heart.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(1.5) rotate(${Math.random() * 360}deg)`;
           heart.style.opacity = '0';
-        });
-        setTimeout(() => heart.remove(), 1300);
+        }, 20);
+
+        setTimeout(() => heart.remove(), 1400);
       }
     }
 
@@ -471,15 +531,14 @@ document.addEventListener('click', unlockAudio, { once: true });
       const h = new Date().getHours();
       document.body.classList.remove('theme-day', 'theme-night', 'theme-evening');
       if (h >= 6 && h < 18) {
-        document.body.classList.add('theme-day');       // 6:00–17:59 — день
+        document.body.classList.add('theme-day');
       } else if (h >= 18 && h < 22) {
-        document.body.classList.add('theme-evening');   // 18:00–21:59 — закат
+        document.body.classList.add('theme-evening');
       } else {
-        document.body.classList.add('theme-night');     // 22:00–5:59 — ночь
+        document.body.classList.add('theme-night');
       }
     }
     applyThemeByTime();
-    // Обновлять тему каждую минуту (на случай, если открыто долго)
     setInterval(applyThemeByTime, 60000);
 
     // Фоновые сердечки
