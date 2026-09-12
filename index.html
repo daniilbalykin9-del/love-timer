@@ -246,7 +246,7 @@
     </div>
   </div>
   <audio id="bgMusic" loop preload="auto">
-    <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc7b8e9.mp3?filename=romantic-piano-124828.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2021/11/25/audio_91b32e02f9.mp3?filename=relaxing-piano-music-114679.mp3" type="audio/mpeg">
   </audio>
   <script>
     if (window.Telegram && window.Telegram.WebApp) {
@@ -254,6 +254,20 @@
       tg.ready();
       tg.expand();
     }
+    // 🔓 Разблокировка аудио (для Safari и мобильных браузеров)
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.25;
+
+function unlockAudio() {
+  bgMusic.play().then(() => {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+  }).catch(err => console.log('Аудио пока заблокировано:', err));
+  document.removeEventListener('touchstart', unlockAudio);
+  document.removeEventListener('click', unlockAudio);
+}
+document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('click', unlockAudio, { once: true });
     const START_DATE = new Date(2026, 7, 3, 22, 0);
     function updateTimer() {
       const diff = new Date() - START_DATE;
