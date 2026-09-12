@@ -34,18 +34,22 @@
     }
 
     /* Летающие сердечки на фоне */
-    .heart-bg {
-      position: fixed;
-      font-size: 20px;
-      opacity: 0.15;
-      animation: floatUp linear infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
-    @keyframes floatUp {
-      0%   { transform: translateY(100vh) rotate(0deg); }
-      100% { transform: translateY(-100px) rotate(360deg); }
-    }
+   .heart-bg {
+  position: fixed;
+  font-size: 20px;
+  opacity: 0;
+  bottom: -50px;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(0deg);       opacity: 0; }
+  10%  {                                              opacity: 0.15; }
+  90%  {                                              opacity: 0.15; }
+  100% { transform: translateY(calc(-100vh - 100px)) rotate(360deg); opacity: 0; }
+}
 
     .content {
       position: relative;
@@ -541,18 +545,26 @@
     applyThemeByTime();
     setInterval(applyThemeByTime, 60000);
 
-    // Фоновые сердечки
-    const bgHearts = ['❤️', '💕', '💖', '💗', '💓'];
-    for (let i = 0; i < 15; i++) {
-      const h = document.createElement('div');
-      h.className = 'heart-bg';
-      h.textContent = bgHearts[Math.floor(Math.random() * bgHearts.length)];
-      h.style.left = Math.random() * 100 + '%';
-      h.style.animationDuration = (8 + Math.random() * 10) + 's';
-      h.style.animationDelay = Math.random() * 10 + 's';
-      h.style.fontSize = (14 + Math.random() * 24) + 'px';
-      document.body.appendChild(h);
-    }
+// Фоновые сердечки
+const bgHearts = ['❤️', '💕', '💖', '💗', '💓'];
+for (let i = 0; i < 15; i++) {
+  const h = document.createElement('div');
+  h.className = 'heart-bg';
+  h.textContent = bgHearts[Math.floor(Math.random() * bgHearts.length)];
+  h.style.left = Math.random() * 100 + '%';
+  h.style.fontSize = (14 + Math.random() * 24) + 'px';
+  h.style.animationDuration = (10 + Math.random() * 10) + 's';
+  h.style.animationDelay = (Math.random() * 12) + 's';
+  h.style.animationPlayState = 'paused'; // пауза пока не в DOM
+  document.body.appendChild(h);
+
+  // Запускаем анимацию только после того, как элемент отрисовался
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      h.style.animationPlayState = 'running';
+    });
+  });
+}
   </script>
 </body>
 </html>
