@@ -13,31 +13,26 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js';
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
 
-// Конфигурация Firebase вашего веб-приложения
-const firebaseConfig = { 
-  apiKey : "AIzaSyDTlgC6B-bLdho0GNSe9xo0O7hFz4Ngk_g" , 
-  authDomain : "our-love-diary-557c1.firebaseapp.com" , 
-  databaseURL : "https://our-love-diary-557c1-default-rtdb.europe-west1.firebasedatabase.app" , 
-  projectId : "our-love-diary-557c1" , 
-  storageBucket : "our-love-diary-557c1.firebasestorage.app" , 
-  messagingSenderId : "305039388289" , 
-  appId : "1:305039388289:web:a1a6dde06463d808f8e780" 
-};
+    const firebaseConfig = { 
+      apiKey : "AIzaSyDTlgC6B-bLdho0GNSe9xo0O7hFz4Ngk_g" , 
+      authDomain : "our-love-diary-557c1.firebaseapp.com" , 
+      databaseURL : "https://our-love-diary-557c1-default-rtdb.europe-west1.firebasedatabase.app" , 
+      projectId : "our-love-diary-557c1" , 
+      storageBucket : "our-love-diary-557c1.firebasestorage.app" , 
+      messagingSenderId : "305039388289" , 
+      appId : "1:305039388289:web:a1a6dde06463d808f8e780" 
+    };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Делаем доступным из обычного скрипта
     window.firebaseDB = { db, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove, serverTimestamp };
   </script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    html, body {
-      min-height: 100%;
-      width: 100%;
-    }
+    html, body { min-height: 100%; width: 100%; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -286,15 +281,15 @@ const firebaseConfig = {
       position: fixed;
       top: calc(16px + env(safe-area-inset-top, 0px));
       right: calc(16px + env(safe-area-inset-right, 0px));
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 2px solid rgba(255, 255, 255, 0.6);
       color: white;
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
       z-index: 100;
       display: flex;
@@ -302,7 +297,7 @@ const firebaseConfig = {
       justify-content: center;
       padding: 0;
       margin: 0;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
     }
     .music-btn:active { transform: scale(0.9); }
 
@@ -340,10 +335,7 @@ const firebaseConfig = {
     }
 
     /* === ДНЕВНИК === */
-    .diary-section {
-      width: 100%;
-      margin-top: 4px;
-    }
+    .diary-section { width: 100%; margin-top: 4px; }
     .diary-panel {
       display: none;
       width: 100%;
@@ -371,11 +363,7 @@ const firebaseConfig = {
       outline: none;
     }
     .diary-input::placeholder { color: rgba(255, 255, 255, 0.6); }
-    #diarySaveBtn {
-      padding: 12px 24px;
-      font-size: 14px;
-      margin-bottom: 0;
-    }
+    #diarySaveBtn { padding: 12px 24px; font-size: 14px; margin-bottom: 0; }
     .diary-list {
       margin-top: 16px;
       max-height: 320px;
@@ -408,12 +396,7 @@ const firebaseConfig = {
       white-space: pre-wrap;
       margin-bottom: 8px;
     }
-    .diary-reactions {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 6px;
-    }
+    .diary-reactions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
     .reaction-btn {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -437,11 +420,7 @@ const firebaseConfig = {
       background: rgba(255, 107, 157, 0.4);
       border-color: rgba(255, 107, 157, 0.7);
     }
-    .reaction-count {
-      font-size: 11px;
-      opacity: 0.8;
-      font-weight: 600;
-    }
+    .reaction-count { font-size: 11px; opacity: 0.8; font-weight: 600; }
     .diary-delete {
       position: absolute;
       top: 6px;
@@ -463,13 +442,7 @@ const firebaseConfig = {
     }
     .diary-delete::after { display: none; }
     .diary-delete:active { transform: scale(0.9); background: rgba(0,0,0,0.45); }
-    .diary-empty {
-      font-size: 13px;
-      opacity: 0.7;
-      text-align: center;
-      padding: 10px 0;
-    }
-    .diary-loading {
+    .diary-empty, .diary-loading {
       font-size: 13px;
       opacity: 0.7;
       text-align: center;
@@ -477,10 +450,7 @@ const firebaseConfig = {
     }
 
     /* === КАЛЕНДАРЬ === */
-    .calendar-section {
-      width: 100%;
-      margin-bottom: 16px;
-    }
+    .calendar-section { width: 100%; margin-bottom: 16px; }
     .calendar-header {
       display: flex;
       align-items: center;
@@ -488,11 +458,8 @@ const firebaseConfig = {
       margin-bottom: 12px;
     }
     .calendar-header button {
-      width: 32px;
-      height: 32px;
-      min-width: 32px;
-      padding: 0;
-      margin: 0;
+      width: 32px; height: 32px; min-width: 32px;
+      padding: 0; margin: 0;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.15);
       color: white;
@@ -505,24 +472,9 @@ const firebaseConfig = {
     }
     .calendar-header button::after { display: none; }
     .calendar-header button:active { transform: scale(0.9); }
-    .calendar-month {
-      font-size: 15px;
-      font-weight: 700;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.3);
-    }
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin-bottom: 8px;
-    }
-    .calendar-day-name {
-      text-align: center;
-      font-size: 10px;
-      opacity: 0.6;
-      font-weight: 600;
-      padding: 4px 0;
-    }
+    .calendar-month { font-size: 15px; font-weight: 700; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px; }
+    .calendar-day-name { text-align: center; font-size: 10px; opacity: 0.6; font-weight: 600; padding: 4px 0; }
     .calendar-day {
       aspect-ratio: 1;
       display: flex;
@@ -538,11 +490,7 @@ const firebaseConfig = {
       border: 1px solid transparent;
     }
     .calendar-day:active { transform: scale(0.9); }
-    .calendar-day.other-month { opacity: 0.3; }
-    .calendar-day.today {
-      border-color: rgba(255, 215, 0, 0.7);
-      font-weight: 700;
-    }
+    .calendar-day.today { border-color: rgba(255, 215, 0, 0.7); font-weight: 700; }
     .calendar-day.has-entry {
       background: rgba(255, 107, 157, 0.35);
       font-weight: 700;
@@ -566,32 +514,49 @@ const firebaseConfig = {
     /* === КНОПКА НАЗАД === */
     .back-btn {
       position: fixed;
-      top: calc(16px + env(safe-area-inset-top, 0px));
-      left: calc(16px + env(safe-area-inset-left, 0px));
-      width: 44px;
-      height: 44px;
+      top: calc(14px + env(safe-area-inset-top, 0px));
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1.5px solid rgba(255, 255, 255, 0.6);
+      background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+      border: 3px solid #ffffff;
       color: white;
-      font-size: 20px;
+      font-size: 30px;
+      font-weight: 900;
       cursor: pointer;
-      z-index: 99999;
+      z-index: 2147483647;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 0;
       margin: 0;
-      transition: transform 0.2s, background 0.2s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      transition: transform 0.2s, box-shadow 0.3s;
+      box-shadow:
+        0 6px 24px rgba(0,0,0,0.5),
+        0 0 30px rgba(255, 107, 157, 0.8),
+        0 0 60px rgba(255, 107, 157, 0.5);
       pointer-events: auto;
+      line-height: 1;
+      animation: backPulse 1.8s ease-in-out infinite;
+      -webkit-tap-highlight-color: transparent;
     }
     .back-btn.show { display: flex; }
-    .back-btn:active {
-      transform: scale(0.9);
-      background: rgba(0, 0, 0, 0.7);
+    .back-btn:active { transform: translateX(-50%) scale(0.85); }
+    @keyframes backPulse {
+      0%, 100% {
+        box-shadow:
+          0 6px 24px rgba(0,0,0,0.5),
+          0 0 30px rgba(255, 107, 157, 0.8),
+          0 0 60px rgba(255, 107, 157, 0.5);
+      }
+      50% {
+        box-shadow:
+          0 6px 24px rgba(0,0,0,0.5),
+          0 0 45px rgba(255, 107, 157, 1),
+          0 0 90px rgba(255, 107, 157, 0.7);
+      }
     }
 
     /* === ВТОРАЯ СТРАНИЦА === */
@@ -610,8 +575,8 @@ const firebaseConfig = {
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 70px 20px 40px 20px;
-      padding-top: calc(70px + env(safe-area-inset-top, 0px));
+      padding: 90px 20px 40px 20px;
+      padding-top: calc(90px + env(safe-area-inset-top, 0px));
       padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
       scroll-behavior: smooth;
     }
@@ -680,8 +645,7 @@ const firebaseConfig = {
 
     .photo-frame {
       position: relative;
-      width: 180px;
-      height: 180px;
+      width: 180px; height: 180px;
       margin-bottom: 22px;
       display: flex;
       align-items: center;
@@ -698,8 +662,7 @@ const firebaseConfig = {
       50%      { transform: scale(1.04); box-shadow: 0 0 55px rgba(255, 107, 157, 0.9), 0 0 100px rgba(255, 107, 157, 0.5); }
     }
     .photo-frame img {
-      width: 170px;
-      height: 170px;
+      width: 170px; height: 170px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #1a0a2e;
@@ -707,12 +670,7 @@ const firebaseConfig = {
       z-index: 2;
       background: rgba(255,255,255,0.08);
     }
-    .photo-fallback {
-      font-size: 70px;
-      position: relative;
-      z-index: 2;
-      line-height: 170px;
-    }
+    .photo-fallback { font-size: 70px; position: relative; z-index: 2; line-height: 170px; }
 
     .frame-heart {
       position: absolute;
@@ -872,9 +830,7 @@ const firebaseConfig = {
       gap: 14px;
     }
     .ctrl-btn {
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
+      width: 42px; height: 42px; min-width: 42px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.14);
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -890,9 +846,7 @@ const firebaseConfig = {
     .ctrl-btn::after { display: none; }
     .ctrl-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.25); }
     .ctrl-btn.play-btn {
-      width: 54px;
-      height: 54px;
-      min-width: 54px;
+      width: 54px; height: 54px; min-width: 54px;
       font-size: 20px;
       background: linear-gradient(135deg, #ffffff 0%, #ffe4f0 100%);
       color: #c44569;
@@ -998,13 +952,35 @@ const firebaseConfig = {
       will-change: transform, opacity;
     }
 
+    /* === СЕРДЦЕ ИЗ СЛОВ — красивый фон === */
+    #heartWordsScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 50%, rgba(120, 40, 120, 0.35) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 30% 80%, rgba(255, 107, 157, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 70% 20%, rgba(70, 130, 220, 0.18) 0%, transparent 70%),
+        radial-gradient(circle at center, #0d0518 0%, #050208 60%, #000000 100%);
+      z-index: 250;
+      display: none;
+      overflow: hidden;
+      touch-action: none;
+    }
+    #heartWordsScreen.active { display: block; }
+    #heartCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+
     @media (max-height: 700px) {
       .photo-frame { width: 150px; height: 150px; margin-bottom: 16px; }
       .photo-frame img { width: 140px; height: 140px; }
       .page2-title { font-size: 18px; margin-bottom: 12px; }
       .lyric-text { font-size: 15px; padding: 10px 14px; }
       .lyric-container { min-height: 70px; margin-bottom: 10px; }
-      #page2 { padding-top: 60px; }
+      #page2 { padding-top: 80px; }
       .player-controls { padding: 12px 14px 10px; }
     }
 
@@ -1041,6 +1017,9 @@ const firebaseConfig = {
     <button type="button" class="reset-btn" id="openPage2" style="background: rgba(255,100,150,0.35); border-color: rgba(255,150,180,0.7);">
       💖 Для тебя
     </button>
+    <button type="button" class="reset-btn" id="openHeartWords" style="background: rgba(70,130,180,0.35); border-color: rgba(100,180,255,0.7);">
+      💗 Сердце из слов
+    </button>
     <button type="button" class="reset-btn" id="resetBtn">🔄 Сбросить счётчик</button>
 
     <div class="message-card" id="messageCard"></div>
@@ -1055,7 +1034,6 @@ const firebaseConfig = {
     <div class="diary-section">
       <button type="button" class="reset-btn" id="toggleDiaryBtn">📓 Наш дневник</button>
       <div class="diary-panel" id="diaryPanel">
-        <!-- КАЛЕНДАРЬ -->
         <div class="calendar-section" id="calendarSection">
           <div class="calendar-header">
             <button type="button" id="prevMonth">‹</button>
@@ -1109,6 +1087,12 @@ const firebaseConfig = {
     </div>
   </div>
 
+  <!-- === СЕРДЦЕ ИЗ СЛОВ === -->
+  <div id="heartWordsScreen">
+    <button type="button" class="back-btn" id="heartWordsBack">←</button>
+    <canvas id="heartCanvas"></canvas>
+  </div>
+
   <!-- ФИНАЛЬНЫЙ ЭКРАН -->
   <div class="final-screen" id="finalScreen">
     <div class="final-heart">❤️</div>
@@ -1128,6 +1112,10 @@ const firebaseConfig = {
 
   <audio id="songPlayer" preload="auto" playsinline webkit-playsinline>
     <source src="music-love.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="heartMusic" loop preload="auto" playsinline webkit-playsinline>
+    <source src="love_you.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -1334,20 +1322,15 @@ const firebaseConfig = {
     const progressFill = document.getElementById('progressFill');
 
     function updateCounterText() {
-      if (shownCount === 0) {
-        counter.textContent = "Нажми на кнопку — и получи послание 💌";
-      } else if (shownCount === 1) {
-        counter.textContent = "Ты открыла 1 послание 💗";
-      } else {
-        counter.textContent = `Ты открыла ${shownCount} посланий 💗`;
-      }
+      if (shownCount === 0) counter.textContent = "Нажми на кнопку — и получи послание 💌";
+      else if (shownCount === 1) counter.textContent = "Ты открыла 1 послание 💗";
+      else counter.textContent = `Ты открыла ${shownCount} посланий 💗`;
     }
 
     function updateProgress() {
       const left = Math.max(0, 10 - shownCount);
-      if (specialShown) {
-        progressWrap.style.display = 'none';
-      } else {
+      if (specialShown) progressWrap.style.display = 'none';
+      else {
         progressWrap.style.display = 'flex';
         progressLabel.textContent = `🎁 До сюрприза осталось: ${left}`;
         progressFill.style.width = Math.min(100, (shownCount / 10) * 100) + '%';
@@ -1368,9 +1351,7 @@ const firebaseConfig = {
     }
 
     btn.addEventListener('click', () => {
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-      }
+      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
       playMusicOnFirstClick();
       card.classList.remove('show', 'special');
 
@@ -1410,15 +1391,12 @@ const firebaseConfig = {
       btn.textContent = '💌 Скажи мне что-то тёплое';
       updateCounterText();
       updateProgress();
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-      }
+      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     });
 
     // ============================================================
-    // ДНЕВНИК С FIREBASE, РЕАКЦИЯМИ И КАЛЕНДАРЁМ
+    // ДНЕВНИК
     // ============================================================
-
     const diaryPanel = document.getElementById('diaryPanel');
     const toggleDiaryBtn = document.getElementById('toggleDiaryBtn');
     const diaryInput = document.getElementById('diaryInput');
@@ -1430,25 +1408,20 @@ const firebaseConfig = {
     const nextMonthBtn = document.getElementById('nextMonth');
     let diaryOpen = false;
 
-    // Реакции
     const REACTIONS = ['❤️', '😍', '🥰', '😘', '💋', '🌸'];
-
-    // Состояние календаря
     let currentYear, currentMonth;
-    let allEntries = []; // { id, text, date, timestamp, reactions: { emoji: [uid1, uid2] } }
+    let allEntries = [];
     let selectedDate = null;
 
-    // Определяем «кто я» — чтобы считать свои реакции
     let myUserId = safeStorage.get('myUserId');
     if (!myUserId) {
       myUserId = 'user_' + Math.random().toString(36).substr(2, 9);
       safeStorage.set('myUserId', myUserId);
     }
 
-    // Инициализация календаря на текущий месяц
-    const now = new Date();
-    currentYear = now.getFullYear();
-    currentMonth = now.getMonth();
+    const nowDate = new Date();
+    currentYear = nowDate.getFullYear();
+    currentMonth = nowDate.getMonth();
 
     function openDiary() {
       diaryOpen = true;
@@ -1468,7 +1441,6 @@ const firebaseConfig = {
       if (diaryOpen) closeDiary(); else openDiary();
     });
 
-    // === FIREBASE: подписка на записи ===
     let unsubscribeDiary = null;
 
     function subscribeToDiary() {
@@ -1478,9 +1450,7 @@ const firebaseConfig = {
         setTimeout(subscribeToDiary, 500);
         return;
       }
-
       if (unsubscribeDiary) unsubscribeDiary();
-
       const q = fb.query(fb.collection(fb.db, 'diary'), fb.orderBy('timestamp', 'desc'));
       unsubscribeDiary = fb.onSnapshot(q, (snapshot) => {
         allEntries = [];
@@ -1490,7 +1460,9 @@ const firebaseConfig = {
             id: docSnap.id,
             text: data.text || '',
             date: data.date || '',
+            dateKey: data.dateKey || '',
             timestamp: data.timestamp,
+            author: data.author || '',
             reactions: data.reactions || {}
           });
         });
@@ -1502,200 +1474,125 @@ const firebaseConfig = {
       });
     }
 
-    // === Сохранение записи ===
     diarySaveBtn.addEventListener('click', async () => {
       const text = diaryInput.value.trim();
       if (!text) return;
-
       const fb = window.firebaseDB;
-      if (!fb) {
-        alert('Firebase ещё не загрузился. Подожди пару секунд.');
-        return;
-      }
-
+      if (!fb) { alert('Firebase ещё не загрузился.'); return; }
       const now = new Date();
-      const dateStr = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) +
-        ', ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+      const dateStr = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) + ', ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
       const dateKey = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
-
       try {
         await fb.addDoc(fb.collection(fb.db, 'diary'), {
-          text: text,
-          date: dateStr,
-          dateKey: dateKey,
-          timestamp: fb.serverTimestamp(),
-          author: myUserId,
-          reactions: {}
+          text: text, date: dateStr, dateKey: dateKey,
+          timestamp: fb.serverTimestamp(), author: myUserId, reactions: {}
         });
         diaryInput.value = '';
         burstHearts(10);
-        if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-        }
+        if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
       } catch (e) {
         console.error('Save error:', e);
         alert('Не удалось сохранить. Проверь правила Firestore.');
       }
     });
 
-    // === Отображение списка записей ===
     function renderDiary() {
       diaryList.innerHTML = '';
-
       let entriesToShow = allEntries;
-      if (selectedDate) {
-        entriesToShow = allEntries.filter(e => e.dateKey === selectedDate);
-      }
-
+      if (selectedDate) entriesToShow = allEntries.filter(e => e.dateKey === selectedDate);
       if (entriesToShow.length === 0) {
         const empty = document.createElement('p');
         empty.className = 'diary-empty';
-        empty.textContent = selectedDate
-          ? 'В этот день записей нет 📅'
-          : 'Пока здесь пусто — напиши первую запись 💌';
+        empty.textContent = selectedDate ? 'В этот день записей нет 📅' : 'Пока здесь пусто — напиши первую запись 💌';
         diaryList.appendChild(empty);
         return;
       }
-
       const fragment = document.createDocumentFragment();
       entriesToShow.forEach(entry => {
         const item = document.createElement('div');
         item.className = 'diary-item';
-
         const dateEl = document.createElement('div');
         dateEl.className = 'diary-date';
         dateEl.textContent = entry.date;
-
         const textEl = document.createElement('div');
         textEl.className = 'diary-text';
         textEl.textContent = entry.text;
-
-        // Реакции
         const reactionsWrap = document.createElement('div');
         reactionsWrap.className = 'diary-reactions';
-
         REACTIONS.forEach(emoji => {
           const users = entry.reactions[emoji] || [];
           const count = users.length;
           const isMine = users.includes(myUserId);
-
           const rBtn = document.createElement('button');
           rBtn.type = 'button';
           rBtn.className = 'reaction-btn' + (isMine ? ' active' : '');
           rBtn.innerHTML = `<span>${emoji}</span>${count > 0 ? `<span class="reaction-count">${count}</span>` : ''}`;
-
           rBtn.addEventListener('click', async () => {
             const fb = window.firebaseDB;
             if (!fb) return;
             const entryRef = fb.doc(fb.db, 'diary', entry.id);
-            const currentUsers = entry.reactions[emoji] || [];
-
             try {
-              if (isMine) {
-                await fb.updateDoc(entryRef, {
-                  ['reactions.' + emoji]: fb.arrayRemove(myUserId)
-                });
-              } else {
-                await fb.updateDoc(entryRef, {
-                  ['reactions.' + emoji]: fb.arrayUnion(myUserId)
-                });
-              }
-              if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-              }
-            } catch (e) {
-              console.error('Reaction error:', e);
-            }
+              if (isMine) await fb.updateDoc(entryRef, { ['reactions.' + emoji]: fb.arrayRemove(myUserId) });
+              else await fb.updateDoc(entryRef, { ['reactions.' + emoji]: fb.arrayUnion(myUserId) });
+            } catch (e) { console.error('Reaction error:', e); }
           });
-
           reactionsWrap.appendChild(rBtn);
         });
-
         item.appendChild(dateEl);
         item.appendChild(textEl);
         item.appendChild(reactionsWrap);
-
-        // Удаление (только если это твоя запись или автора нет)
         if (entry.author === myUserId || !entry.author) {
           const delBtn = document.createElement('button');
           delBtn.type = 'button';
           delBtn.className = 'diary-delete';
-          delBtn.setAttribute('aria-label', 'Удалить запись');
           delBtn.textContent = '×';
           delBtn.addEventListener('click', async () => {
             if (!confirm('Удалить эту запись?')) return;
             const fb = window.firebaseDB;
             if (!fb) return;
-            try {
-              await fb.deleteDoc(fb.doc(fb.db, 'diary', entry.id));
-            } catch (e) {
-              console.error('Delete error:', e);
-            }
+            try { await fb.deleteDoc(fb.doc(fb.db, 'diary', entry.id)); } catch (e) { console.error(e); }
           });
           item.appendChild(delBtn);
         }
-
         fragment.appendChild(item);
       });
       diaryList.appendChild(fragment);
     }
 
-    // === КАЛЕНДАРЬ ===
     const MONTH_NAMES = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     const DAY_NAMES = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
     function renderCalendar() {
       calendarMonth.textContent = MONTH_NAMES[currentMonth] + ' ' + currentYear;
-
       const firstDay = new Date(currentYear, currentMonth, 1);
       const lastDay = new Date(currentYear, currentMonth + 1, 0);
       const daysInMonth = lastDay.getDate();
-      const startWeekday = (firstDay.getDay() + 6) % 7; // Пн=0
-
+      const startWeekday = (firstDay.getDay() + 6) % 7;
       const today = new Date();
       const todayKey = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-
-      // Дни с записями
       const daysWithEntries = new Set();
       allEntries.forEach(e => { if (e.dateKey) daysWithEntries.add(e.dateKey); });
-
       calendarGrid.innerHTML = '';
-
-      // Заголовки дней
       DAY_NAMES.forEach(name => {
         const d = document.createElement('div');
         d.className = 'calendar-day-name';
         d.textContent = name;
         calendarGrid.appendChild(d);
       });
-
-      // Пустые клетки до первого дня
-      for (let i = 0; i < startWeekday; i++) {
-        const empty = document.createElement('div');
-        calendarGrid.appendChild(empty);
-      }
-
-      // Дни месяца
+      for (let i = 0; i < startWeekday; i++) calendarGrid.appendChild(document.createElement('div'));
       for (let day = 1; day <= daysInMonth; day++) {
         const dateKey = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
         const cell = document.createElement('div');
         cell.className = 'calendar-day';
         cell.textContent = day;
-
         if (dateKey === todayKey) cell.classList.add('today');
         if (daysWithEntries.has(dateKey)) cell.classList.add('has-entry');
         if (dateKey === selectedDate) cell.classList.add('selected');
-
         cell.addEventListener('click', () => {
-          if (selectedDate === dateKey) {
-            selectedDate = null;
-          } else {
-            selectedDate = dateKey;
-          }
+          selectedDate = (selectedDate === dateKey) ? null : dateKey;
           renderCalendar();
           renderDiary();
         });
-
         calendarGrid.appendChild(cell);
       }
     }
@@ -1716,44 +1613,32 @@ const firebaseConfig = {
       renderDiary();
     });
 
-    // ===== Остальные функции (музыка, сердечки и т.д.) =====
-
+    // ===== Музыка =====
     const music = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
+    const heartMusic = document.getElementById('heartMusic');
     let musicStarted = false;
     let musicOn = safeStorage.get('musicOn') !== 'false';
     music.volume = 0.25;
+    heartMusic.volume = 0.4;
 
-    function updateMusicIcon() {
-      musicBtn.textContent = musicOn ? '🔊' : '🔇';
-    }
+    function updateMusicIcon() { musicBtn.textContent = musicOn ? '🔊' : '🔇'; }
     updateMusicIcon();
 
     function playMusicOnFirstClick() {
-      if (!musicStarted && musicOn) {
-        music.play().catch(() => {});
-        musicStarted = true;
-      }
+      if (!musicStarted && musicOn) { music.play().catch(() => {}); musicStarted = true; }
     }
 
     musicBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       musicOn = !musicOn;
       safeStorage.set('musicOn', musicOn);
-      if (musicOn) {
-        music.play().catch(() => {});
-        musicStarted = true;
-      } else {
-        music.pause();
-      }
+      if (musicOn) { music.play().catch(() => {}); musicStarted = true; } else { music.pause(); }
       updateMusicIcon();
     });
 
     function unlockAudio() {
-      music.play().then(() => {
-        music.pause();
-        music.currentTime = 0;
-      }).catch(() => {});
+      music.play().then(() => { music.pause(); music.currentTime = 0; }).catch(() => {});
       document.removeEventListener('touchstart', unlockAudio);
       document.removeEventListener('click', unlockAudio);
     }
@@ -1765,7 +1650,6 @@ const firebaseConfig = {
       const emojis = ['❤️', '💖', '💕', '💗', '💓', '💞', '✨'];
       const fragment = document.createDocumentFragment();
       const created = [];
-
       for (let i = 0; i < count; i++) {
         const heart = document.createElement('div');
         heart.className = 'burst-heart';
@@ -1780,13 +1664,11 @@ const firebaseConfig = {
         created.push(heart);
       }
       document.body.appendChild(fragment);
-
       created.forEach(heart => {
         const angle = Math.random() * Math.PI * 2;
         const distance = 100 + Math.random() * 180;
         const x = Math.cos(angle) * distance;
         const y = Math.sin(angle) * distance - 100;
-
         requestAnimationFrame(() => {
           heart.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(1.5) rotate(${Math.random() * 360}deg)`;
           heart.style.opacity = '0';
@@ -1804,16 +1686,9 @@ const firebaseConfig = {
       const h = new Date().getHours();
       document.body.classList.remove('theme-day', 'theme-night', 'theme-evening');
       const meta = document.getElementById('themeColorMeta');
-      if (h >= 6 && h < 18) {
-        document.body.classList.add('theme-day');
-        if (meta) meta.setAttribute('content', '#c44569');
-      } else if (h >= 18 && h < 22) {
-        document.body.classList.add('theme-evening');
-        if (meta) meta.setAttribute('content', '#d64d6d');
-      } else {
-        document.body.classList.add('theme-night');
-        if (meta) meta.setAttribute('content', '#1a1a3e');
-      }
+      if (h >= 6 && h < 18) { document.body.classList.add('theme-day'); if (meta) meta.setAttribute('content', '#c44569'); }
+      else if (h >= 18 && h < 22) { document.body.classList.add('theme-evening'); if (meta) meta.setAttribute('content', '#d64d6d'); }
+      else { document.body.classList.add('theme-night'); if (meta) meta.setAttribute('content', '#1a1a3e'); }
     }
     applyThemeByTime();
     setInterval(applyThemeByTime, 60000);
@@ -1850,9 +1725,7 @@ const firebaseConfig = {
     function photoBurst() {
       const rect = photoFrame.getBoundingClientRect();
       burstHeartsAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 18);
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-      }
+      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
     photoFrame.addEventListener('dblclick', photoBurst);
     photoFrame.addEventListener('touchend', () => {
@@ -1861,7 +1734,7 @@ const firebaseConfig = {
       lastTap = now;
     }, { passive: true });
 
-    // ========== ВТОРАЯ СТРАНИЦА / ПЛЕЕР ==========
+    // ========== ВТОРАЯ СТРАНИЦА ==========
     const page2 = document.getElementById('page2');
     const backBtn = document.getElementById('backBtn');
     const songPlayer = document.getElementById('songPlayer');
@@ -1869,7 +1742,6 @@ const firebaseConfig = {
     const finalScreen = document.getElementById('finalScreen');
     const replayBtn = document.getElementById('replayBtn');
     const finalExitBtn = document.getElementById('finalExitBtn');
-
     const seekRange = document.getElementById('seekRange');
     const curTimeEl = document.getElementById('curTime');
     const durTimeEl = document.getElementById('durTime');
@@ -1970,18 +1842,13 @@ const firebaseConfig = {
       }
     }
 
-    function updatePlayIcon() {
-      playPauseBtn.textContent = songPlayer.paused ? '▶️' : '⏸️';
-    }
+    function updatePlayIcon() { playPauseBtn.textContent = songPlayer.paused ? '▶️' : '⏸️'; }
     songPlayer.addEventListener('play', updatePlayIcon);
     songPlayer.addEventListener('pause', updatePlayIcon);
 
     playPauseBtn.addEventListener('click', () => {
-      if (songPlayer.paused) {
-        songPlayer.play().catch(() => {});
-      } else {
-        songPlayer.pause();
-      }
+      if (songPlayer.paused) songPlayer.play().catch(() => {});
+      else songPlayer.pause();
     });
 
     skipBackBtn.addEventListener('click', () => {
@@ -1993,7 +1860,6 @@ const firebaseConfig = {
       songPlayer.currentTime = Math.min(dur, songPlayer.currentTime + 10);
       resyncLyricsToTime(songPlayer.currentTime);
     });
-
     songVolBtn.addEventListener('click', () => {
       songMuted = !songMuted;
       songPlayer.muted = songMuted;
@@ -2001,16 +1867,12 @@ const firebaseConfig = {
     });
 
     songPlayer.addEventListener('loadedmetadata', () => {
-      if (isFinite(songPlayer.duration)) {
-        durTimeEl.textContent = formatTime(songPlayer.duration);
-      }
+      if (isFinite(songPlayer.duration)) durTimeEl.textContent = formatTime(songPlayer.duration);
     });
 
     seekRange.addEventListener('input', () => {
       isSeeking = true;
-      if (isFinite(songPlayer.duration) && songPlayer.duration > 0) {
-        curTimeEl.textContent = formatTime((seekRange.value / 100) * songPlayer.duration);
-      }
+      if (isFinite(songPlayer.duration) && songPlayer.duration > 0) curTimeEl.textContent = formatTime((seekRange.value / 100) * songPlayer.duration);
     });
     seekRange.addEventListener('change', () => {
       if (isFinite(songPlayer.duration) && songPlayer.duration > 0) {
@@ -2026,60 +1888,37 @@ const firebaseConfig = {
       songPlayer.pause();
       finalScreen.classList.add('active');
       finalBurstHearts(40);
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-      }
+      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     }
 
-    function hideFinal() {
-      finalScreen.classList.remove('active');
-      finalShown = false;
-    }
+    function hideFinal() { finalScreen.classList.remove('active'); finalShown = false; }
 
     function updateSongProgress() {
-      if (!page2.classList.contains('active') || document.hidden) {
-        progressRafId = null;
-        return;
-      }
-
+      if (!page2.classList.contains('active') || document.hidden) { progressRafId = null; return; }
       const currentTime = songPlayer.currentTime;
-
       if (!isSeeking && songPlayer.duration && isFinite(songPlayer.duration)) {
         seekRange.value = (currentTime / songPlayer.duration) * 100;
         curTimeEl.textContent = formatTime(currentTime);
       }
-
       while (lyricIndex < LYRICS.length) {
         const lyric = LYRICS[lyricIndex];
         if (currentTime >= lyric.time - SYNC_WINDOW) {
-          if (lyricIndex !== lastShownIndex) {
-            showLyric(lyricIndex);
-            lastShownIndex = lyricIndex;
-          }
+          if (lyricIndex !== lastShownIndex) { showLyric(lyricIndex); lastShownIndex = lyricIndex; }
           lyricIndex++;
-        } else {
-          break;
-        }
+        } else break;
       }
-
       if (songPlayer.duration && isFinite(songPlayer.duration) && !finalShown) {
-        if (currentTime >= songPlayer.duration - 0.5 || songPlayer.ended) {
-          showFinal();
-        }
+        if (currentTime >= songPlayer.duration - 0.5 || songPlayer.ended) showFinal();
       }
-
       progressRafId = requestAnimationFrame(updateSongProgress);
     }
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && page2.classList.contains('active') && !progressRafId) {
-        progressRafId = requestAnimationFrame(updateSongProgress);
-      }
+      if (!document.hidden && page2.classList.contains('active') && !progressRafId) progressRafId = requestAnimationFrame(updateSongProgress);
     });
 
     function openPage2() {
       music.pause();
-
       page2.classList.add('active');
       page2.scrollTop = 0;
       backBtn.classList.add('show');
@@ -2094,7 +1933,6 @@ const firebaseConfig = {
       seekRange.value = 0;
       curTimeEl.textContent = '0:00';
       durTimeEl.textContent = '0:00';
-
       const startSong = () => {
         songPlayer.play().then(updatePlayIcon).catch(() => {
           updatePlayIcon();
@@ -2108,7 +1946,6 @@ const firebaseConfig = {
         });
       };
       startSong();
-
       setTimeout(() => {
         if (LYRICS.length > 0) {
           lyricText.textContent = LYRICS[0].text;
@@ -2118,10 +1955,7 @@ const firebaseConfig = {
           lyricIndex = 1;
         }
       }, 400);
-
-      if (!progressRafId) {
-        progressRafId = requestAnimationFrame(updateSongProgress);
-      }
+      if (!progressRafId) progressRafId = requestAnimationFrame(updateSongProgress);
     }
 
     function closePage2() {
@@ -2134,25 +1968,12 @@ const firebaseConfig = {
       seekRange.value = 0;
       curTimeEl.textContent = '0:00';
       hideFinal();
-      if (progressRafId) {
-        cancelAnimationFrame(progressRafId);
-        progressRafId = null;
-      }
-
-      if (musicOn && musicStarted) {
-        music.play().catch(() => {});
-      }
+      if (progressRafId) { cancelAnimationFrame(progressRafId); progressRafId = null; }
+      if (musicOn && musicStarted) music.play().catch(() => {});
     }
 
-    replayBtn.addEventListener('click', () => {
-      hideFinal();
-      openPage2();
-    });
-
-    finalExitBtn.addEventListener('click', () => {
-      hideFinal();
-      closePage2();
-    });
+    replayBtn.addEventListener('click', () => { hideFinal(); openPage2(); });
+    finalExitBtn.addEventListener('click', () => { hideFinal(); closePage2(); });
 
     function finalBurstHearts(count = 40) {
       if (prefersReducedMotion) return;
@@ -2161,7 +1982,6 @@ const firebaseConfig = {
       const centerY = window.innerHeight / 2;
       const fragment = document.createDocumentFragment();
       const created = [];
-
       for (let i = 0; i < count; i++) {
         const heart = document.createElement('div');
         heart.className = 'final-burst-heart';
@@ -2176,13 +1996,11 @@ const firebaseConfig = {
         created.push(heart);
       }
       document.body.appendChild(fragment);
-
       created.forEach(heart => {
         const angle = Math.random() * Math.PI * 2;
         const distance = 150 + Math.random() * 250;
         const x = Math.cos(angle) * distance;
         const y = Math.sin(angle) * distance;
-
         requestAnimationFrame(() => {
           heart.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(1.6) rotate(${Math.random() * 720}deg)`;
           heart.style.opacity = '0';
@@ -2193,6 +2011,450 @@ const firebaseConfig = {
 
     document.getElementById('openPage2').addEventListener('click', openPage2);
     backBtn.addEventListener('click', closePage2);
+
+    // ============================================================
+    // 💗 СЕРДЦЕ ИЗ СЛОВ (v5 — тёплая палитра + чёткая форма)
+    // ============================================================
+    const heartWordsScreen = document.getElementById('heartWordsScreen');
+    const heartWordsBack = document.getElementById('heartWordsBack');
+    const heartCanvas = document.getElementById('heartCanvas');
+    const hctx = heartCanvas.getContext('2d', { alpha: false });
+
+    const HEART_WORDS = ['love you', 'Love You', 'LOVE YOU'];
+
+    // 🎨 Палитра: розовый → малиновый → золото → редкий небесно-голубой
+    const HEART_COLORS = [
+      '#FF6B9D', // ярко-розовый
+      '#FF8FB1', // нежно-розовый
+      '#FFB6C1', // светло-розовый
+      '#FFD700', // золото
+      '#FFC0CB', // розовый пудровый
+      '#C44569', // малиновый
+      '#E91E63', // фуксия
+      '#87CEEB'  // небесно-голубой (акцент)
+    ];
+
+    const HEART_IS_MOBILE = isSmallScreen || isLowPower;
+    const OUTLINE_COUNT = HEART_IS_MOBILE ? 110 : 180;
+    const FILL_COUNT = HEART_IS_MOBILE ? 90 : 150;
+    const MIN_GAP_OUTLINE = HEART_IS_MOBILE ? 30 : 22;
+    const MIN_GAP_FILL = HEART_IS_MOBILE ? 40 : 32;
+    const FRAMES_PER_STEP = 2.2;
+    const FILL_FRAMES_PER_STEP = 1.6;
+    const TARGET_FPS = HEART_IS_MOBILE ? 40 : 60;
+    const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+    let HEART_W = window.innerWidth;
+    let HEART_H = window.innerHeight;
+    let HEART_SCALE = Math.min(HEART_W, HEART_H) / 64;
+
+    function heartResize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      HEART_W = window.innerWidth;
+      HEART_H = window.innerHeight;
+      heartCanvas.width = HEART_W * dpr;
+      heartCanvas.height = HEART_H * dpr;
+      heartCanvas.style.width = HEART_W + 'px';
+      heartCanvas.style.height = HEART_H + 'px';
+      hctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      HEART_SCALE = Math.min(HEART_W, HEART_H) / 64;
+    }
+    heartResize();
+    window.addEventListener('resize', heartResize);
+
+    // 💗 Улучшенная формула — чёткая выемка сверху, острая точка снизу
+    function heartXY(t) {
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+      return { x: x, y: -y * 1.06 };
+    }
+
+    function toScreen(bx, by) {
+      return { x: bx * HEART_SCALE + HEART_W / 2, y: by * HEART_SCALE + HEART_H / 2 };
+    }
+
+    let heartParticles = [];
+    let heartFrame = 0;
+    let heartAnimId = null;
+    let heartLastTime = 0;
+    let heartCenterShown = false;
+    let heartCenterTime = 0;
+    let heartFillStartFrame = 0;
+    let heartBursts = [];
+    let heartFinalSalute = false;
+
+    let heartStars = [];
+    let heartFloatingHearts = [];
+
+    function buildBackground() {
+      heartStars = [];
+      const starCount = HEART_IS_MOBILE ? 35 : 60;
+      for (let i = 0; i < starCount; i++) {
+        heartStars.push({
+          x: Math.random() * HEART_W,
+          y: Math.random() * HEART_H,
+          size: 0.6 + Math.random() * 1.4,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+      heartFloatingHearts = [];
+      const fhCount = HEART_IS_MOBILE ? 8 : 12;
+      const emojis = ['❤️', '💖', '💕', '💗', '💞'];
+      for (let i = 0; i < fhCount; i++) {
+        heartFloatingHearts.push({
+          x: Math.random() * HEART_W,
+          y: Math.random() * HEART_H,
+          size: 14 + Math.random() * 14,
+          speed: 0.15 + Math.random() * 0.3,
+          wobblePhase: Math.random() * Math.PI * 2,
+          wobbleSpeed: 0.01 + Math.random() * 0.02,
+          emoji: emojis[(Math.random() * emojis.length) | 0],
+          alpha: 0.15 + Math.random() * 0.15
+        });
+      }
+    }
+
+    function drawBackground(timestamp) {
+      const t = timestamp * 0.001;
+      for (let i = 0; i < heartStars.length; i++) {
+        const s = heartStars[i];
+        const flick = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * 2 + s.phase));
+        hctx.globalAlpha = flick * 0.7;
+        hctx.fillStyle = '#ffffff';
+        hctx.shadowColor = '#ffffff';
+        hctx.shadowBlur = 4;
+        hctx.beginPath();
+        hctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        hctx.fill();
+      }
+      hctx.shadowBlur = 8;
+      hctx.textAlign = 'center';
+      hctx.textBaseline = 'middle';
+      for (let i = 0; i < heartFloatingHearts.length; i++) {
+        const f = heartFloatingHearts[i];
+        f.y -= f.speed;
+        f.wobblePhase += f.wobbleSpeed;
+        if (f.y < -50) { f.y = HEART_H + 50; f.x = Math.random() * HEART_W; }
+        const wobble = Math.sin(f.wobblePhase) * 20;
+        hctx.globalAlpha = f.alpha;
+        hctx.shadowColor = '#FF6B9D';
+        hctx.font = `${f.size}px Arial`;
+        hctx.fillText(f.emoji, f.x + wobble, f.y);
+      }
+      hctx.globalAlpha = 1;
+      hctx.shadowBlur = 0;
+    }
+
+    function drawHeartGlow(timestamp) {
+      const t = timestamp * 0.0008;
+      const breath = 0.5 + 0.5 * Math.sin(t);
+      const cx = HEART_W / 2;
+      const cy = HEART_H / 2;
+      const r = Math.min(HEART_W, HEART_H) * (0.35 + breath * 0.08);
+      const grad = hctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      grad.addColorStop(0, `rgba(255, 107, 157, ${0.10 + breath * 0.06})`);
+      grad.addColorStop(0.5, `rgba(120, 40, 120, ${0.05 + breath * 0.03})`);
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      hctx.globalAlpha = 1;
+      hctx.fillStyle = grad;
+      hctx.fillRect(0, 0, HEART_W, HEART_H);
+    }
+
+    function buildOutlineParticles() {
+      const particles = [];
+      const placed = [];
+      for (let i = 0; i < OUTLINE_COUNT; i++) {
+        const t = (i / OUTLINE_COUNT) * 2 * Math.PI;
+        const h = heartXY(t);
+        const s = toScreen(h.x, h.y);
+        let tooClose = false;
+        for (let j = 0; j < placed.length; j++) {
+          const dx = s.x - placed[j].x;
+          const dy = s.y - placed[j].y;
+          if (dx*dx + dy*dy < MIN_GAP_OUTLINE * MIN_GAP_OUTLINE) { tooClose = true; break; }
+        }
+        if (tooClose) continue;
+        placed.push(s);
+        particles.push({
+          x: s.x, y: s.y, order: i,
+          word: HEART_WORDS[(Math.random() * HEART_WORDS.length) | 0],
+          color: HEART_COLORS[(Math.random() * HEART_COLORS.length) | 0],
+          alpha: 0, delay: 0,
+          scaleFrom: 0.3, offsetY: -18,
+          sizeMult: 0.9 + Math.random() * 0.3
+        });
+      }
+      return particles;
+    }
+
+    function buildFillParticles() {
+      const particles = [];
+      const placed = [];
+      let attempts = 0;
+      const maxAttempts = FILL_COUNT * 80;
+      while (particles.length < FILL_COUNT && attempts < maxAttempts) {
+        attempts++;
+        const t = Math.random() * 2 * Math.PI;
+        const r = Math.random() * 0.82;
+        const h = heartXY(t);
+        const s = toScreen(h.x * r, h.y * r);
+        let tooClose = false;
+        for (let j = 0; j < placed.length; j++) {
+          const dx = s.x - placed[j].x;
+          const dy = s.y - placed[j].y;
+          if (dx*dx + dy*dy < MIN_GAP_FILL * MIN_GAP_FILL) { tooClose = true; break; }
+        }
+        if (tooClose) continue;
+        placed.push(s);
+        particles.push({
+          x: s.x, y: s.y,
+          order: (Math.random() * 320) | 0,
+          word: HEART_WORDS[(Math.random() * HEART_WORDS.length) | 0],
+          color: HEART_COLORS[(Math.random() * HEART_COLORS.length) | 0],
+          alpha: 0, delay: 0,
+          scaleFrom: 0.3, offsetY: -18,
+          sizeMult: 0.9 + Math.random() * 0.3
+        });
+      }
+      return particles;
+    }
+
+    function initHeartParticles() {
+      const outline = buildOutlineParticles();
+      const fill = buildFillParticles();
+      const outlineSpan = outline.length > 0 ? Math.max.apply(null, outline.map(p => p.order)) : 0;
+      const fillStartFrame = Math.floor(outlineSpan * FRAMES_PER_STEP) + 30;
+      outline.forEach(p => { p.delay = Math.floor(p.order * FRAMES_PER_STEP); });
+      fill.forEach(p => { p.delay = fillStartFrame + Math.floor(p.order * FILL_FRAMES_PER_STEP); });
+      heartParticles = outline.concat(fill);
+      return fillStartFrame;
+    }
+
+    function spawnBurst(x, y, color, count = 3) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.5 + Math.random() * 1.4;
+        heartBursts.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1, color,
+          size: 1.2 + Math.random() * 2
+        });
+      }
+    }
+
+    function spawnFinalSalute() {
+      const cx = HEART_W / 2;
+      const cy = HEART_H / 2;
+      const count = HEART_IS_MOBILE ? 50 : 90;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2 + Math.random() * 5;
+        heartBursts.push({
+          x: cx, y: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          color: HEART_COLORS[(Math.random() * HEART_COLORS.length) | 0],
+          size: 1.5 + Math.random() * 2.5
+        });
+      }
+    }
+
+    function drawHeart(timestamp) {
+      heartAnimId = requestAnimationFrame(drawHeart);
+      if (timestamp - heartLastTime < FRAME_INTERVAL) return;
+      heartLastTime = timestamp;
+      heartFrame++;
+
+      hctx.fillStyle = 'rgba(5, 2, 8, 0.32)';
+      hctx.fillRect(0, 0, HEART_W, HEART_H);
+      drawBackground(timestamp);
+      drawHeartGlow(timestamp);
+
+      for (let i = heartBursts.length - 1; i >= 0; i--) {
+        const b = heartBursts[i];
+        b.x += b.vx; b.y += b.vy;
+        b.vx *= 0.95; b.vy *= 0.95;
+        b.life -= 0.022;
+        if (b.life <= 0) { heartBursts.splice(i, 1); continue; }
+        hctx.globalAlpha = b.life * 0.95;
+        hctx.fillStyle = b.color;
+        hctx.shadowColor = b.color;
+        hctx.shadowBlur = 10;
+        hctx.beginPath();
+        hctx.arc(b.x, b.y, b.size * b.life, 0, Math.PI * 2);
+        hctx.fill();
+      }
+      hctx.shadowBlur = 0;
+
+      hctx.save();
+      hctx.font = 'bold 17px Arial, sans-serif';
+      hctx.textAlign = 'center';
+      hctx.textBaseline = 'middle';
+
+      for (let i = 0; i < heartParticles.length; i++) {
+        const p = heartParticles[i];
+        const wasInvisible = p.alpha <= 0;
+        if (heartFrame > p.delay && p.alpha < 1) {
+          p.alpha = Math.min(1, p.alpha + 0.06);
+          if (wasInvisible && p.alpha > 0.1) spawnBurst(p.x, p.y, p.color, HEART_IS_MOBILE ? 2 : 3);
+        }
+        if (p.alpha <= 0) continue;
+        const a = p.alpha;
+        if (a <= 0.02) continue;
+
+        const t = p.alpha;
+        const easeOut = 1 - Math.pow(1 - t, 3);
+        const overshoot = 1 + 0.15 * Math.sin(t * Math.PI);
+        const scaleNow = p.scaleFrom + (1 - p.scaleFrom) * easeOut * overshoot;
+        const yOffset = p.offsetY * (1 - easeOut);
+
+        hctx.globalAlpha = a;
+        hctx.fillStyle = p.color;
+        hctx.save();
+        hctx.translate(p.x, p.y + yOffset);
+        hctx.scale(p.sizeMult * scaleNow, p.sizeMult * scaleNow);
+        hctx.shadowColor = p.color;
+        hctx.shadowBlur = 6;
+        hctx.fillText(p.word, 0, 0);
+        hctx.restore();
+      }
+      hctx.restore();
+      hctx.globalAlpha = 1;
+      hctx.shadowBlur = 0;
+
+      if (!heartCenterShown && heartFrame > heartFillStartFrame + 180) {
+        heartCenterShown = true;
+        heartCenterTime = timestamp;
+        if (!heartFinalSalute) { heartFinalSalute = true; spawnFinalSalute(); }
+        if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+      }
+
+      if (heartCenterShown) {
+        const elapsed = (timestamp - heartCenterTime) / 1000;
+        const t = Math.min(1, elapsed / 1.2);
+        const easeOut = 1 - Math.pow(1 - t, 3);
+        const scale = 0.5 + 0.5 * easeOut;
+        const alphaText = easeOut;
+        const cx = HEART_W / 2;
+        const cy = HEART_H / 2 + Math.min(HEART_W, HEART_H) / 40;
+        const baseFont = Math.min(HEART_W / 4, HEART_H / 5, 110);
+
+        hctx.save();
+        hctx.textAlign = 'center';
+        hctx.textBaseline = 'middle';
+        hctx.translate(cx, cy);
+        hctx.scale(scale, scale);
+        hctx.font = `bold ${baseFont}px Georgia, serif`;
+
+        hctx.globalAlpha = alphaText * 0.35;
+        hctx.fillStyle = '#FF6B9D';
+        hctx.shadowColor = '#FF6B9D';
+        hctx.shadowBlur = 60;
+        hctx.fillText('Love You', 0, 0);
+        hctx.fillText('Love You', 0, 0);
+
+        hctx.globalAlpha = alphaText;
+        hctx.fillStyle = '#FFFFFF';
+        hctx.shadowColor = '#FFFFFF';
+        hctx.shadowBlur = 25;
+        hctx.fillText('Love You', 0, 0);
+        hctx.restore();
+      }
+    }
+
+    function onHeartTouch(e) {
+      e.preventDefault();
+      const t = e.touches && e.touches[0] ? e.touches[0] : e;
+      const x = t.clientX;
+      const y = t.clientY;
+      for (let i = 0; i < 14; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.5 + Math.random() * 4;
+        heartBursts.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          color: HEART_COLORS[(Math.random() * HEART_COLORS.length) | 0],
+          size: 2 + Math.random() * 3
+        });
+      }
+      for (let i = 0; i < 6; i++) {
+        const el = document.createElement('div');
+        el.className = 'burst-heart';
+        el.textContent = ['❤️', '💖', '💕', '💗'][(Math.random() * 4) | 0];
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.fontSize = (18 + Math.random() * 14) + 'px';
+        el.style.transform = 'translate(-50%, -50%)';
+        el.style.opacity = '1';
+        el.style.transition = 'transform 1.4s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 1.4s ease-out';
+        document.body.appendChild(el);
+        const dx = (Math.random() - 0.5) * 160;
+        const dy = -80 - Math.random() * 120;
+        requestAnimationFrame(() => {
+          el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) rotate(${Math.random() * 360}deg) scale(1.4)`;
+          el.style.opacity = '0';
+        });
+        setTimeout(() => el.remove(), 1500);
+      }
+      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
+
+    heartCanvas.addEventListener('touchstart', onHeartTouch, { passive: false });
+    heartCanvas.addEventListener('mousedown', onHeartTouch);
+
+    function openHeartWords() {
+      music.pause();
+      heartWordsScreen.classList.add('active');
+      heartWordsBack.classList.add('show');
+
+      heartFrame = 0;
+      heartLastTime = 0;
+      heartCenterShown = false;
+      heartCenterTime = 0;
+      heartFinalSalute = false;
+      heartBursts = [];
+
+      heartResize();
+      heartFillStartFrame = initHeartParticles();
+      buildBackground();
+
+      hctx.fillStyle = '#050208';
+      hctx.fillRect(0, 0, HEART_W, HEART_H);
+
+      if (heartAnimId) cancelAnimationFrame(heartAnimId);
+      heartAnimId = requestAnimationFrame(drawHeart);
+
+      heartMusic.currentTime = 0;
+      heartMusic.play().catch(() => {
+        const resumeOnTap = () => {
+          heartMusic.play().catch(() => {});
+          document.removeEventListener('touchstart', resumeOnTap);
+          document.removeEventListener('click', resumeOnTap);
+        };
+        document.addEventListener('touchstart', resumeOnTap, { once: true, passive: true });
+        document.addEventListener('click', resumeOnTap, { once: true });
+      });
+
+      if (window.Telegram && window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
+
+    function closeHeartWords() {
+      heartWordsScreen.classList.remove('active');
+      heartWordsBack.classList.remove('show');
+      if (heartAnimId) { cancelAnimationFrame(heartAnimId); heartAnimId = null; }
+      heartBursts = [];
+      heartMusic.pause();
+      heartMusic.currentTime = 0;
+      if (musicOn && musicStarted) music.play().catch(() => {});
+    }
+
+    document.getElementById('openHeartWords').addEventListener('click', openHeartWords);
+    heartWordsBack.addEventListener('click', closeHeartWords);
   </script>
 </body>
 </html>
