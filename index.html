@@ -2355,12 +2355,18 @@
         const cx = HEART_W / 2;
         const cy = HEART_H / 2 + Math.min(HEART_W, HEART_H) / 40;
 
-        // 📐 «Love You» в Georgia занимает ~3.5 × размер по ширине
-        // Ограничиваем так, чтобы слово точно вписывалось с запасом
-        const maxByWidth = HEART_W / 4.0;      // ~1.4 × размер слева и справа
-        const maxByHeight = HEART_H / 6.0;
-        const baseFont = Math.max(30, Math.min(maxByWidth, maxByHeight, 110));
-
+        // 📐 «Love You» в Georgia (bold) занимает ~3.3 × размер шрифта по ширине
+        // Ограничиваем по фактической ширине текста с запасом
+        const SAFE_WIDTH = HEART_W * 0.85;   // максимум 85% ширины экрана
+        const MAX_FONT = 90;
+        let baseFont = Math.min(HEART_W / 3.3, HEART_H / 6, MAX_FONT);
+        // Финальная проверка: если слово всё ещё шире безопасной ширины — уменьшаем
+        hctx.font = `bold ${baseFont}px Georgia, serif`;
+        const measured = hctx.measureText('Love You').width;
+        if (measured > SAFE_WIDTH) {
+          baseFont = baseFont * (SAFE_WIDTH / measured);
+        }
+        baseFont = Math.max(28, baseFont);
         hctx.save();
         hctx.textAlign = 'center';
         hctx.textBaseline = 'middle';
