@@ -2013,7 +2013,7 @@
     backBtn.addEventListener('click', closePage2);
 
     // ============================================================
-    // 💗 СЕРДЦЕ ИЗ СЛОВ (v5 — тёплая палитра + чёткая форма)
+    // 💗 СЕРДЦЕ ИЗ СЛОВ (v6 — крупное на телефоне + плотный контур)
     // ============================================================
     const heartWordsScreen = document.getElementById('heartWordsScreen');
     const heartWordsBack = document.getElementById('heartWordsBack');
@@ -2022,23 +2022,16 @@
 
     const HEART_WORDS = ['love you', 'Love You', 'LOVE YOU'];
 
-    // 🎨 Палитра: розовый → малиновый → золото → редкий небесно-голубой
     const HEART_COLORS = [
-      '#FF6B9D', // ярко-розовый
-      '#FF8FB1', // нежно-розовый
-      '#FFB6C1', // светло-розовый
-      '#FFD700', // золото
-      '#FFC0CB', // розовый пудровый
-      '#C44569', // малиновый
-      '#E91E63', // фуксия
-      '#87CEEB'  // небесно-голубой (акцент)
+      '#FF6B9D', '#FF8FB1', '#FFB6C1', '#FFD700',
+      '#FFC0CB', '#C44569', '#E91E63', '#87CEEB'
     ];
 
     const HEART_IS_MOBILE = isSmallScreen || isLowPower;
-    const OUTLINE_COUNT = HEART_IS_MOBILE ? 110 : 180;
-    const FILL_COUNT = HEART_IS_MOBILE ? 90 : 150;
-    const MIN_GAP_OUTLINE = HEART_IS_MOBILE ? 30 : 22;
-    const MIN_GAP_FILL = HEART_IS_MOBILE ? 40 : 32;
+    const OUTLINE_COUNT = HEART_IS_MOBILE ? 220 : 260;
+    const FILL_COUNT = HEART_IS_MOBILE ? 180 : 220;
+    const MIN_GAP_OUTLINE = HEART_IS_MOBILE ? 18 : 16;
+    const MIN_GAP_FILL = HEART_IS_MOBILE ? 24 : 22;
     const FRAMES_PER_STEP = 2.2;
     const FILL_FRAMES_PER_STEP = 1.6;
     const TARGET_FPS = HEART_IS_MOBILE ? 40 : 60;
@@ -2046,7 +2039,7 @@
 
     let HEART_W = window.innerWidth;
     let HEART_H = window.innerHeight;
-    let HEART_SCALE = Math.min(HEART_W, HEART_H) / 64;
+    let HEART_SCALE = Math.min(HEART_W, HEART_H * 0.9) / 50;
 
     function heartResize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2057,12 +2050,11 @@
       heartCanvas.style.width = HEART_W + 'px';
       heartCanvas.style.height = HEART_H + 'px';
       hctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      HEART_SCALE = Math.min(HEART_W, HEART_H) / 64;
+      HEART_SCALE = Math.min(HEART_W, HEART_H * 0.9) / 50;
     }
     heartResize();
     window.addEventListener('resize', heartResize);
 
-    // 💗 Улучшенная формула — чёткая выемка сверху, острая точка снизу
     function heartXY(t) {
       const x = 16 * Math.pow(Math.sin(t), 3);
       const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
@@ -2290,7 +2282,7 @@
       hctx.shadowBlur = 0;
 
       hctx.save();
-      hctx.font = 'bold 17px Arial, sans-serif';
+      hctx.font = `bold ${HEART_IS_MOBILE ? 15 : 17}px Arial, sans-serif`;
       hctx.textAlign = 'center';
       hctx.textBaseline = 'middle';
 
@@ -2340,7 +2332,12 @@
         const alphaText = easeOut;
         const cx = HEART_W / 2;
         const cy = HEART_H / 2 + Math.min(HEART_W, HEART_H) / 40;
-        const baseFont = Math.min(HEART_W / 4, HEART_H / 5, 110);
+
+        // 📐 Ограничиваем размер: не больше 32% ширины экрана
+        // и не больше 1/4 высоты, максимум 110px — точно вписывается
+        const maxByWidth = HEART_W * 0.32;
+        const maxByHeight = HEART_H * 0.22;
+        const baseFont = Math.min(maxByWidth, maxByHeight, 110);
 
         hctx.save();
         hctx.textAlign = 'center';
