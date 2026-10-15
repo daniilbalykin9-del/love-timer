@@ -2355,9 +2355,11 @@
         const cx = HEART_W / 2;
         const cy = HEART_H / 2 + Math.min(HEART_W, HEART_H) / 40;
 
-        const maxByWidth = HEART_W * 0.32;
-        const maxByHeight = HEART_H * 0.22;
-        const baseFont = Math.min(maxByWidth, maxByHeight, 110);
+        // 📐 «Love You» в Georgia занимает ~3.5 × размер по ширине
+        // Ограничиваем так, чтобы слово точно вписывалось с запасом
+        const maxByWidth = HEART_W / 4.0;      // ~1.4 × размер слева и справа
+        const maxByHeight = HEART_H / 6.0;
+        const baseFont = Math.max(30, Math.min(maxByWidth, maxByHeight, 110));
 
         hctx.save();
         hctx.textAlign = 'center';
