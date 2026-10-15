@@ -2013,7 +2013,7 @@
     backBtn.addEventListener('click', closePage2);
 
     // ============================================================
-    // 💗 СЕРДЦЕ ИЗ СЛОВ (v6 — крупное на телефоне + плотный контур)
+    // 💗 СЕРДЦЕ ИЗ СЛОВ (v7 — одинаково на телефоне и компе)
     // ============================================================
     const heartWordsScreen = document.getElementById('heartWordsScreen');
     const heartWordsBack = document.getElementById('heartWordsBack');
@@ -2028,10 +2028,6 @@
     ];
 
     const HEART_IS_MOBILE = isSmallScreen || isLowPower;
-    const OUTLINE_COUNT = HEART_IS_MOBILE ? 220 : 260;
-    const FILL_COUNT = HEART_IS_MOBILE ? 180 : 220;
-    const MIN_GAP_OUTLINE = HEART_IS_MOBILE ? 18 : 16;
-    const MIN_GAP_FILL = HEART_IS_MOBILE ? 24 : 22;
     const FRAMES_PER_STEP = 2.2;
     const FILL_FRAMES_PER_STEP = 1.6;
     const TARGET_FPS = HEART_IS_MOBILE ? 40 : 60;
@@ -2039,7 +2035,28 @@
 
     let HEART_W = window.innerWidth;
     let HEART_H = window.innerHeight;
-    let HEART_SCALE = Math.min(HEART_W, HEART_H * 0.9) / 50;
+    let HEART_SCALE = 1;
+    let HEART_WORD_SIZE = 17;
+
+    function heartCalcScale() {
+      const maxByWidth = HEART_W / 36;
+      const maxByHeight = HEART_H / 42;
+      HEART_SCALE = Math.min(maxByWidth, maxByHeight) * 0.92;
+      HEART_WORD_SIZE = Math.max(11, Math.min(20, HEART_SCALE * 0.85));
+    }
+
+    function getParticleCounts() {
+      const contourLength = 2 * Math.PI * 11 * HEART_SCALE;
+      const wordsOnContour = Math.floor(contourLength / (HEART_WORD_SIZE * 0.85));
+      const outlineCount = Math.max(160, Math.min(360, wordsOnContour * 2));
+      const fillCount = Math.floor(outlineCount * 0.7);
+      return { outlineCount, fillCount };
+    }
+
+    let OUTLINE_COUNT = 200;
+    let FILL_COUNT = 140;
+    let MIN_GAP_OUTLINE = 14;
+    let MIN_GAP_FILL = 20;
 
     function heartResize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2050,7 +2067,12 @@
       heartCanvas.style.width = HEART_W + 'px';
       heartCanvas.style.height = HEART_H + 'px';
       hctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      HEART_SCALE = Math.min(HEART_W, HEART_H * 0.9) / 50;
+      heartCalcScale();
+      const counts = getParticleCounts();
+      OUTLINE_COUNT = counts.outlineCount;
+      FILL_COUNT = counts.fillCount;
+      MIN_GAP_OUTLINE = HEART_WORD_SIZE * 0.75;
+      MIN_GAP_FILL = HEART_WORD_SIZE * 1.05;
     }
     heartResize();
     window.addEventListener('resize', heartResize);
@@ -2183,7 +2205,7 @@
       const particles = [];
       const placed = [];
       let attempts = 0;
-      const maxAttempts = FILL_COUNT * 80;
+      const maxAttempts = FILL_COUNT * 100;
       while (particles.length < FILL_COUNT && attempts < maxAttempts) {
         attempts++;
         const t = Math.random() * 2 * Math.PI;
@@ -2282,7 +2304,7 @@
       hctx.shadowBlur = 0;
 
       hctx.save();
-      hctx.font = `bold ${HEART_IS_MOBILE ? 15 : 17}px Arial, sans-serif`;
+      hctx.font = `bold ${HEART_WORD_SIZE}px Arial, sans-serif`;
       hctx.textAlign = 'center';
       hctx.textBaseline = 'middle';
 
@@ -2333,8 +2355,6 @@
         const cx = HEART_W / 2;
         const cy = HEART_H / 2 + Math.min(HEART_W, HEART_H) / 40;
 
-        // 📐 Ограничиваем размер: не больше 32% ширины экрана
-        // и не больше 1/4 высоты, максимум 110px — точно вписывается
         const maxByWidth = HEART_W * 0.32;
         const maxByHeight = HEART_H * 0.22;
         const baseFont = Math.min(maxByWidth, maxByHeight, 110);
